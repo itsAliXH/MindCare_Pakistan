@@ -21,10 +21,48 @@ router.get('/', async (req, res) => {
   const cities = asArray(req.query.cities);
   const genders = asArray(req.query.genders);
   const modes = asArray(req.query.modes);
+  const experience = String(req.query.experience || '').trim();
+  const feeRange = String(req.query.feeRange || '').trim();
 
   const match: any = {};
   if (cities.length) match.city = { $in: cities };
   if (genders.length) match.gender = { $in: genders };
+  
+  // Handle experience filtering
+  if (experience) {
+    switch (experience) {
+      case '0-5':
+        match.experienceYear = { $gte: 0, $lte: 5 };
+        break;
+      case '5-10':
+        match.experienceYear = { $gt: 5, $lte: 10 };
+        break;
+      case '10-15':
+        match.experienceYear = { $gt: 10, $lte: 15 };
+        break;
+      case '15+':
+        match.experienceYear = { $gt: 15 };
+        break;
+    }
+  }
+  
+  // Handle fee range filtering
+  if (feeRange) {
+    switch (feeRange) {
+      case 'under-2000':
+        match.feeAmount = { $lt: 2000 };
+        break;
+      case '2000-4000':
+        match.feeAmount = { $gte: 2000, $lte: 4000 };
+        break;
+      case '4000-6000':
+        match.feeAmount = { $gt: 4000, $lte: 6000 };
+        break;
+      case 'above-6000':
+        match.feeAmount = { $gt: 6000 };
+        break;
+    }
+  }
   
   // Handle consolidated mode filtering
   if (modes.length) {
@@ -114,6 +152,46 @@ router.get('/_filters/options', async (_req, res) => {
   const cityCounts = await Therapist.aggregate([{ $group: { _id: '$city', count: { $sum: 1 } } }, { $sort: { count: -1 } }]);
   const genderCounts = await Therapist.aggregate([{ $group: { _id: '$gender', count: { $sum: 1 } } }]);
   
+  // Get experience range counts
+  const experienceCounts = await Therapist.aggregate([
+    {
+      $group: {
+        _id: {
+          $switch: {
+            branches: [
+              { case: { $lte: ['$experienceYear', 5] }, then: '0-5' },
+              { case: { $lte: ['$experienceYear', 10] }, then: '5-10' },
+              { case: { $lte: ['$experienceYear', 15] }, then: '10-15' },
+              { case: { $gt: ['$experienceYear', 15] }, then: '15+' }
+            ],
+            default: 'unknown'
+          }
+        },
+        count: { $sum: 1 }
+      }
+    }
+  ]);
+  
+  // Get fee range counts
+  const feeRangeCounts = await Therapist.aggregate([
+    {
+      $group: {
+        _id: {
+          $switch: {
+            branches: [
+              { case: { $lt: ['$feeAmount', 2000] }, then: 'under-2000' },
+              { case: { $lte: ['$feeAmount', 4000] }, then: '2000-4000' },
+              { case: { $lte: ['$feeAmount', 6000] }, then: '4000-6000' },
+              { case: { $gt: ['$feeAmount', 6000] }, then: 'above-6000' }
+            ],
+            default: 'unknown'
+          }
+        },
+        count: { $sum: 1 }
+      }
+    }
+  ]);
+  
   // Get raw mode counts
   const rawModeCounts = await Therapist.aggregate([
     { $unwind: { path: '$modes', preserveNullAndEmptyArrays: false } }, 
@@ -149,9 +227,17 @@ router.get('/_filters/options', async (_req, res) => {
   console.log('✅ Filter options sent:', { 
     cityCounts: cityCounts.length, 
     genderCounts: genderCounts.length, 
-    modeCounts: consolidatedModeCounts.length 
+    modeCounts: consolidatedModeCounts.length,
+    experienceCounts: experienceCounts.length,
+    feeRangeCounts: feeRangeCounts.length
   });
-  res.json({ cityCounts, genderCounts, modeCounts: consolidatedModeCounts });
+  res.json({ 
+    cityCounts, 
+    genderCounts, 
+    modeCounts: consolidatedModeCounts,
+    experienceCounts,
+    feeRangeCounts
+  });
 });
 
 export default router;

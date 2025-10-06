@@ -15,26 +15,15 @@ export class FilterPanel implements OnInit, OnChanges {
   @Input() isMobile: boolean = false;
   @Output() closeMobileMenu = new EventEmitter<void>();
 
-  // Dynamic Data Arrays
-  cityOptions = [
-    { name: 'Karachi', count: 30 },
-    { name: 'Lahore', count: 17 },
-    { name: 'Islamabad', count: 11 },
-    { name: 'Other', count: 21 },
-  ];
-
+  // Dynamic Data Arrays - will be populated from backend
+  cityOptions: any[] = [];
   experienceOptions = [
     { name: '0-5', label: '0-5 years' },
     { name: '5-10', label: '5-10 years' },
     { name: '10-15', label: '10-15 years' },
     { name: '15+', label: '15+ years' },
   ];
-
-  genderOptions = [
-    { name: 'Female', count: 48 },
-    { name: 'Male', count: 31 },
-  ];
-
+  genderOptions: any[] = [];
   feeRangeOptions = [
     { name: 'under-2000', label: 'Under Rs. 2,000' },
     { name: '2000-4000', label: 'Rs. 2,000 - 4,000' },
@@ -83,6 +72,28 @@ export class FilterPanel implements OnInit, OnChanges {
     if (this.filters) {
       this.localFilters = { ...this.localFilters, ...this.filters };
       this.search.setValue(this.localFilters.search || '');
+    }
+    
+    // Update filter options from backend data
+    if (this.options) {
+      this.cityOptions = this.options.cityCounts || [];
+      this.genderOptions = this.options.genderCounts || [];
+      
+      // Update experience options with counts from backend
+      if (this.options.experienceCounts) {
+        this.experienceOptions = this.experienceOptions.map(exp => {
+          const backendCount = this.options.experienceCounts.find((c: any) => c._id === exp.name);
+          return { ...exp, count: backendCount?.count || 0 };
+        });
+      }
+      
+      // Update fee range options with counts from backend
+      if (this.options.feeRangeCounts) {
+        this.feeRangeOptions = this.feeRangeOptions.map(fee => {
+          const backendCount = this.options.feeRangeCounts.find((c: any) => c._id === fee.name);
+          return { ...fee, count: backendCount?.count || 0 };
+        });
+      }
     }
   }
 
