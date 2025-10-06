@@ -1,0 +1,137 @@
+<div class="modal-overlay" *ngIf="isOpen" (click)="onBackdropClick($event)">
+  <div class="modal-content" *ngIf="therapist">
+    <!-- Header -->
+    <div class="modal-header">
+      <h2 class="modal-title">Therapist Details</h2>
+      <button class="close-button" (click)="onClose()" aria-label="Close">
+        <span class="close-icon">×</span>
+      </button>
+    </div>
+
+    <!-- Profile Summary -->
+    <div class="profile-summary">
+      <div class="profile-avatar">
+        <div class="avatar-circle">
+          <span class="avatar-icon">{{ getAvatar() }}</span>
+        </div>
+      </div>
+      <div class="profile-info">
+        <div>
+          <h3 class="therapist-name">{{ therapist.name }}</h3>
+          <p class="therapist-title">
+            {{ therapist.gender }} • {{ getExperienceText() }} • 
+            <span *ngIf="therapist.expertise?.length">{{ therapist?.expertise?.[0] }}</span>
+          </p>
+        </div>
+       
+        
+        <!-- Contact Details -->
+        <div class="contact-details">
+          <div class="contact-details-sub">
+            <div class="contact-item" *ngIf="therapist.city">
+              <span class="contact-icon location">📍</span>
+              <span class="contact-text">{{ therapist.city }}</span>
+            </div>
+            <div class="contact-item" *ngIf="therapist.feeAmount">
+              <span class="contact-icon fee">💰</span>
+              <span class="contact-text">{{ getFormattedFee() }}</span>
+            </div>
+          </div>
+          
+          <div class="contact-details-sub">
+            <div class="contact-item" *ngIf="therapist.phone">
+              <span class="contact-icon phone">📞</span>
+              <a href="tel:{{ therapist.phone }}" class="contact-link phone-link">
+                {{ getFormattedPhone() }}
+              </a>
+            </div>
+
+            <div class="contact-item" *ngIf="therapist.email">
+              <span class="contact-icon email">✉️</span>
+              <a href="mailto:{{ therapist.email }}" class="contact-link email-link">
+                {{ getFormattedEmail() }}
+              </a>
+            </div>
+
+          </div>
+          
+          
+          
+          
+          
+        </div>
+      </div>
+    </div>
+
+    <!-- Education Section -->
+    <div class="detail-section" *ngIf="getEducationList().length > 0">
+      <h4 class="section-title">Education</h4>
+      <ul class="detail-list">
+        <li *ngFor="let edu of getEducationList()" class="detail-item">
+          {{ edu }}
+        </li>
+      </ul>
+    </div>
+
+    <!-- Experience Section -->
+    <div class="detail-section" *ngIf="getExperienceList().length > 0">
+      <h4 class="section-title">Experience</h4>
+      <ul class="detail-list">
+        <li *ngFor="let exp of getExperienceList()" class="detail-item">
+          {{ exp }}
+        </li>
+      </ul>
+    </div>
+
+    <!-- Areas of Expertise Section -->
+    <div class="detail-section" *ngIf="getExpertiseList().length > 0">
+      <h4 class="section-title">Areas of Expertise</h4>
+      <div class="expertise-tags">
+        <span *ngFor="let expertise of getExpertiseList()" class="expertise-tag">
+          {{ expertise }}
+        </span>
+      </div>
+    </div>
+
+    <!-- About Section -->
+    <div class="detail-section" *ngIf="therapist.about">
+      <h4 class="section-title">About</h4>
+      <p class="about-text">{{ therapist.about }}</p>
+    </div>
+
+    <!-- Consultation Modes Section -->
+    <div class="detail-section" *ngIf="getConsultationModes().length > 0">
+      <h4 class="section-title">Consultation Modes</h4>
+      <div class="consultation-modes">
+        <div class="mode-item" *ngIf="hasInPersonMode()">
+          <span class="mode-check">✅</span>
+          <span class="mode-text">In-person consultations available at clinic</span>
+        </div>
+        <div class="mode-item" *ngIf="hasOnlineMode()">
+          <span class="mode-check">✅</span>
+          <span class="mode-text">Online sessions via video call</span>
+        </div>
+        <div class="mode-item">
+          <span class="mode-check">✅</span>
+          <span class="mode-text">Flexible scheduling including weekends</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <button class="action-btn primary-btn" (click)="onCallClick()" *ngIf="therapist.phone">
+        <span class="btn-icon">📞</span>
+        Call Now
+      </button>
+      <button class="action-btn secondary-btn" (click)="onEmailClick()" *ngIf="therapist.email">
+        <span class="btn-icon">✉️</span>
+        Send Email
+      </button>
+      <button class="action-btn tertiary-btn" (click)="onVisitProfileClick()" *ngIf="therapist.profileUrl">
+        <span class="btn-icon">🔗</span>
+        Visit Profile
+      </button>
+    </div>
+  </div>
+</div>

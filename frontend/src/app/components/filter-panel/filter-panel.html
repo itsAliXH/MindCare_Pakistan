@@ -1,0 +1,95 @@
+
+  <div class="filter-panel-container">
+    <div class="filter-panel-header">
+      <h3 class="panel-title">Filters</h3>
+      <div class="header-buttons">
+        <button class="clear-all-button" (click)="clearAll()">Clear All</button>
+        <button class="mobile-close-button" (click)="closeMobileMenuOption()" *ngIf="isMobile">×</button>
+      </div>
+    </div>
+ 
+  
+    <div class="filter-group">
+      <h4 class="group-title">City</h4>
+      <div class="option-item" *ngFor="let option of (options?.cityCounts || cityOptions)">
+        <label>
+          <input 
+            type="checkbox" 
+            [checked]="localFilters.cities.includes(option._id || option.name)"
+            (change)="toggleArray('cities', option._id || option.name)"
+          >
+          {{ option._id || option.name }}
+        </label>
+        <span class="count" *ngIf="option.count">{{ option.count }}</span>
+      </div>
+    </div>
+  
+    <div class="filter-group">
+      <h4 class="group-title">Experience</h4>
+      <div class="option-item" *ngFor="let option of experienceOptions">
+        <label>
+          <input 
+            type="radio" 
+            name="experience"
+            [checked]="localFilters.experience === option.name"
+            (change)="setRadio('experience', option.name)"
+          >
+          {{ option.label }}
+        </label>
+      </div>
+    </div>
+  
+    <div class="filter-group">
+      <h4 class="group-title">Gender</h4>
+      <div class="option-item" *ngFor="let option of (options?.genderCounts || genderOptions)">
+        <label>
+          <input 
+            type="checkbox"
+            [checked]="localFilters.genders.includes(option._id || option.name)"
+            (change)="toggleArray('genders', option._id || option.name)"
+          >
+          {{ option._id || option.name }}
+        </label>
+        <span class="count" *ngIf="option.count">{{ option.count }}</span>
+      </div>
+    </div>
+  
+    <div class="filter-group">
+      <h4 class="group-title">Fee Range</h4>
+      <div class="option-item" *ngFor="let option of feeRangeOptions">
+        <label>
+          <input 
+            type="radio" 
+            name="feeRange"
+            [checked]="localFilters.feeRange === option.name"
+            (change)="setRadio('feeRange', option.name)"
+          >
+          {{ option.label }}
+        </label>
+      </div>
+    </div>
+  
+    <div class="filter-group last-group">
+      <h4 class="group-title">Consultation Mode</h4>
+      <div class="option-item">
+        <label>
+          <input 
+            type="checkbox"
+            [checked]="localFilters.modes.includes('In-person')"
+            (change)="toggleArray('modes', 'In-person')"
+          >
+          In-person
+        </label> 
+      </div>
+      <div class="option-item">
+        <label>
+          <input 
+            type="checkbox"
+            [checked]="localFilters.modes.includes('Online')"
+            (change)="toggleArray('modes', 'Online')"
+          >  Online
+        </label> 
+      </div>
+    </div>
+    <button class="clear-all-button" (click)="clearAll()">Clear All</button>
+  </div>

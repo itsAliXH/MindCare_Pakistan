@@ -1,0 +1,27 @@
+<article class="card">
+    <div class="info">
+        <div class="avatar">{{ getAvatar() }}</div>
+        <h3>{{therapist.name}}</h3>
+        <div class="rating">
+            <ng-container *ngFor="let star of getStars()">
+                <span *ngIf="star === 'full'" class="star full">★</span>
+                <span *ngIf="star === 'half'" class="star half">★</span>
+                <span *ngIf="star === 'empty'" class="star empty">★</span>
+            </ng-container>
+            <span class="rating-number">{{ therapist.rating?.toFixed(1) || '0.0' }}</span>
+        </div> 
+      <span class="city" *ngIf="therapist.city">
+        <span class="location-icon">📍</span>
+        <span>{{ therapist.city || '-' }}</span>
+      </span> 
+      <span class="city" *ngIf="therapist.feeAmount">
+        <span class="money-icon">💰</span>
+        <span>{{therapist.feeCurrency}} {{ therapist.feeAmount  || '-'}}</span>
+      </span>
+      <div>{{therapist.experienceYear || 0}} year/s exp.</div>
+      <div class="bottom">
+        <button (click)="onViewDetails()">View Details</button>
+      </div>
+    </div>
+  </article>
+  
