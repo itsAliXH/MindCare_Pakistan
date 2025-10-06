@@ -16,7 +16,11 @@ app.use((req, res, next) => {
 });
 
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || 'http://localhost:4200', // Angular dev server
+  origin: [
+    'http://localhost:4200', // Development
+    'https://mindcare-therapist.netlify.app', // Production
+    process.env.CORS_ORIGIN || 'http://localhost:4200' // Environment variable
+  ],
   credentials: true
 }));
 app.use(express.json());
