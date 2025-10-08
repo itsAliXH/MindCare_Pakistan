@@ -2,7 +2,7 @@
   NODE_VERSION = "22.17.1"
 
 [build]
-  command = "npm install && ng build --configuration production"
+  command = "npm install --legacy-peer-deps && ng build --configuration production"
   publish = "dist/frontend/browser"
 
 [[redirects]]
