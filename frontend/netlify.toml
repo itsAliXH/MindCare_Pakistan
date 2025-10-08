@@ -1,5 +1,8 @@
+[build.environment]
+  NODE_VERSION = "22.17.1"
+
 [build]
-  command = "ng build --configuration production"
+  command = "npm install && ng build --configuration production"
   publish = "dist/frontend/browser"
 
 [[redirects]]

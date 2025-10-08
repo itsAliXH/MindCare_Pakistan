@@ -37,7 +37,7 @@ build/
 
 # Node.js
 node_modules/
-package-lock.json
+backend/package-lock.json
 
 # Testing artifacts
 cypress/screenshots/
