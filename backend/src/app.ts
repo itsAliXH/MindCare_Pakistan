@@ -5,6 +5,19 @@ import therapistRouter from './routes/therapists';
 
 const app = express();
 
+// Disable ETag generation to prevent 304 responses during development
+app.set('etag', false);
+
+// Add middleware to disable caching
+app.use((req, res, next) => {
+  res.set({
+    'Cache-Control': 'no-cache, no-store, must-revalidate',
+    'Pragma': 'no-cache',
+    'Expires': '0'
+  });
+  next();
+});
+
 // Add request logging middleware
 app.use((req, res, next) => {
   console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`, {

@@ -192,36 +192,27 @@ router.get('/_filters/options', async (_req, res) => {
     }
   ]);
   
-  // Get raw mode counts
-  const rawModeCounts = await Therapist.aggregate([
-    { $unwind: { path: '$modes', preserveNullAndEmptyArrays: false } }, 
-    { $group: { _id: '$modes', count: { $sum: 1 } } }
-  ]);
-  
-  // Consolidate mode counts into In-person and Online
-  const consolidatedModeCounts = [
-    {
-      _id: 'In-person',
-      count: rawModeCounts
-        .filter(mode => 
-          mode._id?.toLowerCase().includes('person') || 
-          mode._id?.toLowerCase().includes('perso') ||
-          mode._id === 'I' ||
-          mode._id === '-perso'
-        )
-        .reduce((sum, mode) => sum + mode.count, 0)
-    },
-    {
-      _id: 'Online',
-      count: rawModeCounts
-        .filter(mode => 
-          mode._id?.toLowerCase().includes('virtual') || 
-          mode._id?.toLowerCase().includes('telepho') ||
-          mode._id?.toLowerCase().includes('video') ||
-          mode._id?.toLowerCase().includes('ic')
-        )
-        .reduce((sum, mode) => sum + mode.count, 0)
+  // Get mode counts by counting unique therapists with each mode type
+  const inPersonCount = await Therapist.countDocuments({
+    modes: { 
+      $in: [
+        'In-person', 'I', '-perso', 'In person', 'in-person', 'in person'
+      ]
     }
+  });
+  
+  const onlineCount = await Therapist.countDocuments({
+    modes: { 
+      $in: [
+        'Virtual telephonic', 'Virtual video-based', 'Virtual telephoic', 'ic',
+        'Online', 'online', 'Virtual', 'virtual'
+      ]
+    }
+  });
+  
+  const consolidatedModeCounts = [
+    { _id: 'In-person', count: inPersonCount },
+    { _id: 'Online', count: onlineCount }
   ];
   
   console.log('✅ Filter options sent:', { 

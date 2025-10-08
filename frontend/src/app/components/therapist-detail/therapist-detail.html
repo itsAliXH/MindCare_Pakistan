@@ -28,28 +28,28 @@
         <!-- Contact Details -->
         <div class="contact-details">
           <div class="contact-details-sub">
-            <div class="contact-item" *ngIf="therapist.city">
+            <div class="contact-item" *ngIf="therapist">
               <span class="contact-icon location">📍</span>
-              <span class="contact-text">{{ therapist.city }}</span>
+              <span class="contact-text">{{ therapist.city || 'N/A' }}</span>
             </div>
-            <div class="contact-item" *ngIf="therapist.feeAmount">
+            <div class="contact-item" *ngIf="therapist">
               <span class="contact-icon fee">💰</span>
-              <span class="contact-text">{{ getFormattedFee() }}</span>
+              <span class="contact-text">{{ getFormattedFee() || 'N/A' }}</span>
             </div>
           </div>
           
           <div class="contact-details-sub">
-            <div class="contact-item" *ngIf="therapist.phone">
+            <div class="contact-item" *ngIf="therapist">
               <span class="contact-icon phone">📞</span>
               <a href="tel:{{ therapist.phone }}" class="contact-link phone-link">
-                {{ getFormattedPhone() }}
+                {{ getFormattedPhone() || 'N/A' }}
               </a>
             </div>
 
-            <div class="contact-item" *ngIf="therapist.email">
+            <div class="contact-item" *ngIf="therapist">
               <span class="contact-icon email">✉️</span>
               <a href="mailto:{{ therapist.email }}" class="contact-link email-link">
-                {{ getFormattedEmail() }}
+                {{ getFormattedEmail() || 'N/A' }}
               </a>
             </div>
 

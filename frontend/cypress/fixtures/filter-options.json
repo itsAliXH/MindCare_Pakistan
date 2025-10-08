@@ -1,0 +1,31 @@
+{
+  "cityCounts": [
+    { "_id": "Karachi", "count": 15 },
+    { "_id": "Lahore", "count": 8 },
+    { "_id": "Islamabad", "count": 6 },
+    { "_id": "Rawalpindi", "count": 3 },
+    { "_id": "Multan", "count": 2 },
+    { "_id": "Peshawar", "count": 2 },
+    { "_id": "Quetta", "count": 1 }
+  ],
+  "genderCounts": [
+    { "_id": "Male", "count": 20 },
+    { "_id": "Female", "count": 17 }
+  ],
+  "modeCounts": [
+    { "_id": "In-person", "count": 25 },
+    { "_id": "Online", "count": 30 }
+  ],
+  "experienceCounts": [
+    { "_id": "0-5", "count": 12 },
+    { "_id": "5-10", "count": 15 },
+    { "_id": "10-15", "count": 8 },
+    { "_id": "15+", "count": 2 }
+  ],
+  "feeRangeCounts": [
+    { "_id": "under-2000", "count": 5 },
+    { "_id": "2000-4000", "count": 18 },
+    { "_id": "4000-6000", "count": 12 },
+    { "_id": "above-6000", "count": 2 }
+  ]
+}

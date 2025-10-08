@@ -19,12 +19,13 @@
   background: white;
   border-radius: 16px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-  max-width: calc(100% - 30%);
+  max-width: calc(100% - 35%);
   width: 100%;
-  max-height: 90vh;
+  max-height: 70vh;
   overflow-y: auto;
   position: relative;
   animation: modalSlideIn 0.3s ease-out;
+  font-size: 14px;
 }
 
 @keyframes modalSlideIn {
@@ -49,7 +50,7 @@
 }
 
 .modal-title {
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   font-weight: 600;
   color: #333;
   margin: 0;
@@ -92,6 +93,7 @@
 
 .profile-avatar {
   flex-shrink: 0;
+  align-self: center;
 }
 
 .avatar-circle {
@@ -134,12 +136,21 @@
   flex-direction: column;
   gap: 8px;
   width: 100%;
+  overflow-wrap: anywhere;
 }
 
 .contact-details-sub{
   display: flex;
   flex-direction: row;
   width: 100%;
+}
+
+.contact-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  overflow-wrap: anywhere;
 }
 
 .contact-item {
@@ -347,7 +358,8 @@
   }
   
   .modal-content {
-    max-height: 95vh;
+    max-height: 75vh;
+    max-width: calc(100% - 10%);
   }
   
   .profile-summary {
@@ -357,6 +369,8 @@
   
   .avatar-circle {
     align-self: center;
+    width: 70px;
+    height: 70px;
   }
   
   .action-buttons {
