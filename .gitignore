@@ -34,3 +34,21 @@ logs/
 # Build outputs (if any)
 dist/
 build/
+
+# Node.js
+node_modules/
+package-lock.json
+
+# Testing artifacts
+cypress/screenshots/
+cypress/videos/
+coverage/
+
+# OS generated files (additional)
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
