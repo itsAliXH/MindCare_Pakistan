@@ -1,7 +1,7 @@
 export const environment = {
   production: false,
-  _apiUrl: 'http://localhost:4000/api',
-  // _apiUrl: 'https://mindcare-eu8j.onrender.com/api',
+  // _apiUrl: 'http://localhost:4000/api',
+  _apiUrl: 'https://mindcare-eu8j.onrender.com/api',
   get apiUrl() {
     return this._apiUrl;
   },
